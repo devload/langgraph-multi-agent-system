@@ -1,0 +1,19 @@
+agent:
+  name: "claude"
+  type: "claude-cli"
+  timeout: 300
+  
+cli:
+  command: "claude"
+  args:
+    - "--dangerously-skip-permissions"
+  prompt_prefix: "-p"
+  
+files:
+  mission_file: "mission.md"
+  result_file: "result.md"
+  workspace_dir: "/tmp/claude-workspace"
+  
+logging:
+  level: "INFO"
+  file: "agent-claude.log"

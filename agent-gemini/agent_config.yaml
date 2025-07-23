@@ -1,0 +1,19 @@
+agent:
+  name: "gemini"
+  type: "gemini-cli"
+  timeout: 300
+  
+cli:
+  command: "gemini"
+  args:
+    - "--yolo"
+  prompt_prefix: "-p"
+  
+files:
+  mission_file: "mission.md"
+  result_file: "result.md"
+  workspace_dir: "/tmp/gemini-workspace"
+  
+logging:
+  level: "INFO"
+  file: "agent-gemini.log"

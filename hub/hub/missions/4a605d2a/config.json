@@ -1,0 +1,20 @@
+{
+  "missionId": "4a605d2a",
+  "workflow": [
+    {
+      "from_node": "start",
+      "to_node": "claude"
+    },
+    {
+      "from_node": "claude",
+      "to_node": "gemini"
+    },
+    {
+      "from_node": "gemini",
+      "to_node": "end"
+    }
+  ],
+  "mission": "Test mission: analyze this text and summarize it",
+  "status": "registered",
+  "created_at": "2025-07-24T04:28:08.384427"
+}

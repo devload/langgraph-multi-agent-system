@@ -1,0 +1,25 @@
+hub:
+  host: "0.0.0.0"
+  port: 8000
+  mission_dir: "missions"
+  
+agents:
+  claude:
+    host: "localhost"
+    port: 8001
+    cli_command: "claude --dangerously-skip-permissions"
+    timeout: 300
+    
+  gemini:
+    host: "localhost"
+    port: 8002
+    cli_command: "gemini --yolo"
+    timeout: 300
+    
+database:
+  type: "sqlite"
+  connection: ":memory:"
+  
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

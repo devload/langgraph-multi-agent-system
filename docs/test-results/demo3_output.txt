@@ -1,0 +1,38 @@
+🎯 Multi-Agent Mission System - API Demo
+==================================================
+📝 Registering mission...
+✅ Mission registered: demo123
+   Workflow: start → claude → gemini → end
+
+📊 Mission Details:
+   ID: demo123
+   Type: Log Analysis
+   Agents: Claude → Gemini
+
+[Starting mission execution...]
+
+🏃 Running mission demo123...
+
+[04:57:28] Status: running, Agent: claude
+   🔍 Claude is analyzing the logs...
+   ✅ Claude completed analysis
+
+[04:57:30] Status: running, Agent: gemini
+   🚀 Gemini is enhancing the analysis...
+   ✅ Gemini completed enhancement
+
+[04:57:32] Status: completed
+
+📄 Generating final report...
+✅ Report saved to: mission_report_demo123.md
+
+==================================================
+✅ Mission completed successfully!
+
+📊 Results Summary:
+   - 3 critical issues identified
+   - Root cause analysis provided
+   - Actionable recommendations generated
+   - Priority actions defined
+
+📄 View full report: mission_report_demo123.md
