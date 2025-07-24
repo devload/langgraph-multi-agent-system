@@ -12,15 +12,15 @@ from pathlib import Path
 
 class ClaudeAgent(AgentBase):
     def _build_command(self, mission: str) -> list:
-        """Build Claude CLI command"""
+        """Build Claude CLI command with fixed prompt format"""
         cmd = [self.config['cli']['command']]
         
         # Add CLI arguments
         cmd.extend(self.config['cli']['args'])
         
-        # Add prompt
-        cmd.append(self.config['cli']['prompt_prefix'])
-        cmd.append(mission)
+        # Fixed prompt format
+        cmd.append("-p")
+        cmd.append("mission.md 파일을 읽고, 처리한 뒤에 결과를 result.md에 저장하고 agentInfo.md의 agentCallbackUrl을 호출해주세요.")
         
         return cmd
     
@@ -47,12 +47,40 @@ class ClaudeAgent(AgentBase):
         return context
     
     async def execute_cli(self, mission: str, working_dir: Path) -> dict:
-        """Override to add Claude-specific preprocessing"""
-        # Prepare mission with context
+        """Override to create mission.md and agentInfo.md files"""
+        # Prepare mission content with context
         enhanced_mission = self._prepare_mission_context(mission, working_dir)
         
-        # Call parent's execute_cli with enhanced mission
-        return await super().execute_cli(enhanced_mission, working_dir)
+        # Create mission.md file
+        mission_file = working_dir / "mission.md"
+        mission_file.write_text(enhanced_mission)
+        
+        # Create agentInfo.md file with callback information
+        agent_info_file = working_dir / "agentInfo.md"
+        agent_info = f"""# Agent Information
+
+## Callback Details
+agentCallbackUrl: http://localhost:8000/api/agent/result
+missionId: {working_dir.name}
+agent: claude
+
+## Instructions
+1. Process the mission from mission.md
+2. Save your analysis results to result.md
+3. After saving result.md, execute this curl command to notify the Hub:
+
+```bash
+curl -X POST http://localhost:8000/api/agent/result \\
+  -H "Content-Type: application/json" \\
+  -d '{{"missionId": "{working_dir.name}", "agent": "claude", "status": "completed", "message": "Analysis completed successfully", "result_path": "{working_dir.absolute()}/result.md"}}'
+```
+
+IMPORTANT: You must execute the curl command above to complete the mission.
+"""
+        agent_info_file.write_text(agent_info)
+        
+        # Call parent's execute_cli (which will use our fixed prompt)
+        return await super().execute_cli(mission, working_dir)
 
 def main():
     """Main entry point"""

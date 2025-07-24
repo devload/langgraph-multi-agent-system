@@ -78,10 +78,7 @@ start_service "Claude_Agent" \
     "python agent-claude/claude_agent.py" \
     "logs/claude-agent.log"
 
-# Start Gemini Agent
-start_service "Gemini_Agent" \
-    "python agent-gemini/gemini_agent.py" \
-    "logs/gemini-agent.log"
+# Gemini Agent removed - Claude only system
 
 # Wait for services to be ready
 echo ""
@@ -105,7 +102,7 @@ check_service() {
 
 check_service "Hub" "http://localhost:${HUB_PORT:-8000}"
 check_service "Claude Agent" "http://localhost:${CLAUDE_AGENT_PORT:-8001}"
-check_service "Gemini Agent" "http://localhost:${GEMINI_AGENT_PORT:-8002}"
+# Gemini Agent removed
 
 echo ""
 echo "=================================================="

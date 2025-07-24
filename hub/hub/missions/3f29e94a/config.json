@@ -1,0 +1,16 @@
+{
+  "missionId": "3f29e94a",
+  "workflow": [
+    {
+      "from": "start",
+      "to": "claude"
+    },
+    {
+      "from": "claude",
+      "to": "end"
+    }
+  ],
+  "mission": "Python \ud568\uc218 \ucd5c\uc801\ud654\ub97c \uc218\ud589\ud574\uc8fc\uc138\uc694:\n\n```python\ndef find_duplicates(arr):\n    duplicates = []\n    for i in range(len(arr)):\n        for j in range(i + 1, len(arr)):\n            if arr[i] == arr[j] and arr[i] not in duplicates:\n                duplicates.append(arr[i])\n    return duplicates\n```\n\n\ub2e4\uc74c\uc744 \ud3ec\ud568\ud574\uc8fc\uc138\uc694:\n1. \uc2dc\uac04 \ubcf5\uc7a1\ub3c4 \ubd84\uc11d\n2. \ucd5c\uc801\ud654\ub41c \ucf54\ub4dc (O(n) \ubcf5\uc7a1\ub3c4)\n3. \ud14c\uc2a4\ud2b8 \ucf00\uc774\uc2a4\n",
+  "status": "registered",
+  "created_at": "2025-07-25T01:31:09.277846"
+}

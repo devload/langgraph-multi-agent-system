@@ -188,7 +188,7 @@ async def register_mission(request: MissionRegisterRequest):
     
     # Validate workflow first
     try:
-        validate_workflow([edge.dict() for edge in request.workflow])
+        validate_workflow([edge.dict(by_alias=True) for edge in request.workflow])
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     
@@ -201,7 +201,7 @@ async def register_mission(request: MissionRegisterRequest):
     # Save configuration
     config = {
         "missionId": mission_id,
-        "workflow": [edge.dict() for edge in request.workflow],
+        "workflow": [edge.dict(by_alias=True) for edge in request.workflow],
         "mission": request.mission,
         "status": "registered",
         "created_at": datetime.now().isoformat()

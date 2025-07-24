@@ -104,9 +104,9 @@ class AgentBase(ABC):
             # Execute CLI command
             result = await self.execute_cli(request.mission, mission_dir)
             
-            # Save result
-            result_file = mission_dir / self.config['files']['result_file']
-            self._save_result_file(result_file, request.missionId, result)
+            # Save agent execution result (different from Claude's result.md)
+            agent_result_file = mission_dir / f"{self.agent_name}_execution_result.md"
+            self._save_result_file(agent_result_file, request.missionId, result)
             
             # Send result back to Hub
             await self._send_result_to_hub(
@@ -114,7 +114,8 @@ class AgentBase(ABC):
                 request.agent,
                 result['status'],
                 result['message'],
-                str(result_file.absolute())
+                str(agent_result_file.absolute()),
+                result.get('result_content', '')
             )
             
             return {"status": "success", "message": "Command executed"}
@@ -126,6 +127,7 @@ class AgentBase(ABC):
                 request.agent,
                 "error",
                 str(e),
+                "",
                 ""
             )
             return {"status": "error", "message": str(e)}
@@ -224,6 +226,13 @@ class AgentBase(ABC):
             # Check for created files
             files_created = self._find_created_files(working_dir, start_time)
             
+            # Check for result.md file
+            result_content = ""
+            result_file = working_dir / "result.md"
+            if result_file.exists():
+                result_content = result_file.read_text()
+                self.logger.info(f"Found result.md with {len(result_content)} characters")
+            
             return {
                 'status': 'success' if process.returncode == 0 else 'failed',
                 'stdout': stdout.decode('utf-8', errors='replace'),
@@ -231,6 +240,7 @@ class AgentBase(ABC):
                 'return_code': process.returncode,
                 'execution_time': execution_time,
                 'files_created': files_created,
+                'result_content': result_content,
                 'message': f"{self.agent_name} processing completed"
             }
             
@@ -287,7 +297,8 @@ class AgentBase(ABC):
         return created_files
     
     async def _send_result_to_hub(self, mission_id: str, agent: str, 
-                                 status: str, message: str, result_path: str):
+                                 status: str, message: str, result_path: str,
+                                 result_content: str = ""):
         """Send execution result back to Hub"""
         hub_url = os.getenv('HUB_URL', 'http://localhost:8000')
         

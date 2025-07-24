@@ -25,18 +25,6 @@ services:
     depends_on:
       - hub
 
-  agent-gemini:
-    build: ./agent-gemini
-    ports:
-      - "8002:8002"
-    volumes:
-      - ./agent-gemini:/app
-    environment:
-      - PYTHONUNBUFFERED=1
-    networks:
-      - agent-network
-    depends_on:
-      - hub
 
 networks:
   agent-network:

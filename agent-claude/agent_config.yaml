@@ -6,7 +6,10 @@ agent:
 cli:
   command: "claude"
   args:
+    - "--print"
     - "--dangerously-skip-permissions"
+    - "--allowedTools"
+    - "Bash"
   prompt_prefix: "-p"
   
 files:
